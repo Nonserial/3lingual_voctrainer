@@ -1,0 +1,12 @@
+This is a 3-lingual voabulary trainer.
+
+It is designed as "personal" vocabulary trainer. 
+
+You can add new words to your vocabulary and make vocabulary-tests.
+You can search for foreign words and they will be displayed in your motherlanguage and English. 
+
+If your motherlanguage is English, just choose any other language you want to learn in the settings menu.
+
+Currently implemented languages: Arabic, French, German, Italian, Romanian, Russian, Spanish, Turkish.
+
+

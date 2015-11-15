@@ -1,0 +1,540 @@
+#: import main main
+
+<BoxLayout>:
+	canvas.before:
+		BorderImage:
+			border: 0, 0, 0, 0
+			source: "BG.png"
+			pos: self.pos
+			size: self.size
+			
+<ScrollView>:
+	canvas.before:
+		BorderImage:
+			border: 0, 0, 0, 0
+			source: "BG.png"
+			pos: self.pos
+			size: self.size
+
+<DictionaryRoot>:
+	orientation: "vertical"
+	spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+	padding: (root.width * 0.02, root.width * 0.02) if root.width < root.height else (root.height * 0.02, root.height * 0.02)
+	BoxLayout:
+		orientation: "horizontal"
+		canvas:
+			Color:
+				rgba: 0.5, 0.5, 0.5, 1
+			Rectangle:
+				pos: self.pos
+				size: self.size
+		size_hint: 1, None
+		height: "30dp"
+		Label:
+			size_hint: 0.8, 1
+			text: "[i] 3-lingual VOC-Trainer[/i]"
+			markup: True
+			text_size: self.size
+			halign: "left"
+			valign: "middle"
+			font_size: "19dp"
+			#color: 0, 0, 0, 1
+		Button:
+			id: btn_menu
+			background_color: 0, 0, 0, 0
+			size_hint: 0.2, 1
+			size: self.size
+			halign: "right"
+			valign: "middle"
+			text: "[i]Menu [/i]"
+			text_size: self.size
+			font_size: "19dp"
+			markup: True
+			#color: 0, 0, 0, 1
+			on_release: app.open_settings()
+			
+	Button:
+		text: "Vocabulary Input"
+		on_release: root.eingabe_form()
+	Button:
+		text: "Check Yourself"
+		on_release: root.abfrage_form()
+	Button:
+		text: "List"
+		on_release: root.list()
+		
+		
+<Input_Learn>:
+	ScrollView:
+		BoxLayout:
+			orientation: "vertical"
+			spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+			Label:
+				text: root.text()
+				text_size: self.size
+				halign: "center"
+				valign: "middle"
+			TextInput:
+				multiline: False
+				on_focus: root.input()
+				on_text_validate: root.vokabel_eingabe()
+				size_hint: 1, None
+				height: "50dp"
+				id: eing_e_learn
+			Button:
+				size_hint: 1, None
+				height: "50dp"
+				text: "Search"
+				on_release: root.vokabel_eingabe()
+			Button:
+				size_hint: 1, None
+				height: "50dp"
+				text: "Back"
+				on_release: app.back()
+		
+<Unerwuenscht>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "Your input contains..."
+	BoxLayout:
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			text: str(root.unwanted())
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+		Button:
+			size_hint: 1, None
+			height: "50dp"
+			text: "OK"
+			on_release: root.dismiss()
+	
+		
+<Anzeige_VOCS>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "Your VOC-Trainer contains..."
+	on_touch_down: root.press()
+	BoxLayout:
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			id: lb_anzeige_vocs
+			text: str(root.lendict())
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+		Button:
+			size_hint: 1, None
+			height: "50dp"
+			id: anzeige_ok
+			text: "OK"
+			on_release: root.dismiss(), root.press()
+		
+
+<Eingabe_MOTHER_EN>:
+	orientation: "vertical"
+	spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+	Label:
+		id: lb_wort
+		font_size: "40dp"
+		text_size: self.size
+		halign: "center"
+		valign: "middle"
+	Label:
+		id: lb_ausgabe_mother
+		text_size: self.size
+		halign: "center"
+		valign: "middle"
+	Label:
+		id: lb_ausgabe_eng
+		text_size: self.size
+		halign: "center"
+		valign: "middle"
+	Button:
+		size_hint: 1, None
+		height: "50dp"
+		text: "Add"
+		on_release: root.add_to_dict()
+	Button:
+		size_hint: 1, None
+		height: "50dp"
+		text: "Back"
+		on_release: app.back()
+		
+<NOT_Found>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "No translation found..."
+	BoxLayout:
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			text: "No translation found! Retry please!"
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+		Button:
+			size_hint: 1, None
+			height: "50dp"
+			text: "OK"
+			on_release: root.dismiss()
+			
+<Error>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "Error..."
+	BoxLayout:
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			text: "An error occured. Please check your network-connection"	
+			text_size: self.size
+			halign: "center"
+			valign: "middle"	
+		Button:
+			size_hint: 1, None
+			height: "50dp"
+			text: "OK"
+			on_release: root.dismiss()
+	
+<VOC_Vorhanden>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "The word already exists..."
+	BoxLayout:
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			text: "The word already exists in your VOC-Trainer"
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+		Button:
+			size_hint: 1, None
+			height: "50dp"
+			text: "Show"
+			on_release: root.dismiss(), app.show()
+		Button:
+			size_hint: 1, None
+			height: "50dp"
+			text: "OK"
+			on_release: root.dismiss()
+
+<Abfrage>:
+	orientation: "vertical"
+	spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+	Label:
+		id: abfr_lb_wort
+		size_hint: 1, 3
+		font_size: "40dp"
+		text_size: self.size
+		halign: "center"
+		valign: "middle"
+	Label:
+		id: abfr_lb_language
+		size_hint: 1, 2
+		text_size: self.size
+		halign: "center"
+		valign: "middle"
+	GridLayout:
+		size_hint: 1, 5
+		rows: 3
+		canvas:
+			Color:
+				rgba: 0.2, 0.2, 0.2, 0.2
+			Rectangle:
+				pos: self.pos
+				size: self.size
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		CheckBox:
+			id: eins
+			group: "but"
+			size_hint: 0.3, 1
+		Label:
+			id: answer_1
+			markup: True
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+			size_hint: 0.7, 1
+			on_ref_press: root.activatecb(1)
+		CheckBox:
+			id: zwei
+			group: "but"
+			size_hint: 0.3, 1
+		Label:
+			id: answer_2
+			markup: True
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+			size_hint: 0.7, 1
+			on_ref_press: root.activatecb(2)
+		CheckBox:
+			id: drei
+			group: "but"
+			size_hint: 0.3, 1
+		Label:
+			id: answer_3
+			markup: True
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+			size_hint: 0.7, 1
+			on_ref_press: root.activatecb(3)
+	Button:
+		size_hint: 1, None
+		height: "50dp"
+		text: "OK"
+		on_release: root.pruefen(root.wert_uebergabe())
+	Button:
+		size_hint: 1, None
+		height: "50dp"
+		text: "Back"
+		on_release: root.back(), app.back()
+				
+					
+		
+<No_VOCS@Popup>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "No more words to ask..."
+	on_touch_down: app.back()
+	BoxLayout:
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			text: "There are no more words to ask you."
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+		Button:
+			size_hint: 1, None
+			height: "50dp"
+			text: "OK"
+			on_release: app.back(), root.dismiss()
+
+<Number_Abfragen>:
+	ScrollView:
+		BoxLayout:
+			orientation: "vertical"
+			spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+			Label:
+				text: "How much vocabulary would you like to check?"
+				text_size: self.size
+				halign: "center"
+				valign: "middle"
+			TextInput:
+				multiline: False
+				on_focus: root.input()
+				on_text_validate: root.anzahl()
+				size_hint: 1, None
+				height: "50dp"
+				input_type: "number"
+				id: abfr_eingabe
+			Button:
+				size_hint: 1, None
+				height: "50dp"
+				text: "OK"
+				on_release: root.anzahl()
+			Button:
+				size_hint: 1, None
+				height: "50dp"
+				text: "Back"
+				on_release: app.back()
+		
+<Ungueltig>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "Please insert a valid number..."
+	BoxLayout:
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			id: lb_ungueltig
+			text: str(root.lb_text())
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+		Button:
+			size_hint: 1, None
+			height: "50dp"
+			text: "OK"
+			on_release: root.dismiss()
+
+
+<MSG_Klein>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "Test not possible..."	
+	on_touch_down: app.back()
+	BoxLayout:	
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			text: "The test is not yet possible.\nYou need at least 3 words in your list."
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+			on_touch_down: root.dismiss(), app.back()
+			
+	
+<MSG_Fehler>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "Your answer was not correct..."	
+	BoxLayout:	
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			text: "Your answer was not correct..."
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+			on_touch_down: root.dismiss()
+			
+<MSG_Richtig_EN>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "Correct..."	
+	on_touch_down: app.back()
+	BoxLayout:	
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			text: "Correct!"
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+			on_touch_down: app.back(), root.dismiss()
+
+
+<MSG_Richtig_DE>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "Correct..."	
+	BoxLayout:	
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			text: "Correct!"
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+			on_touch_down: root.dismiss()
+			
+					
+<List>:
+	orientation: "vertical"
+	spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+	BoxLayout:
+		id: list_liste
+
+	Button:
+		size_hint: 1, None
+		height: "50dp"
+		text: "Show"
+		on_release: app.show()
+	Button:
+		size_hint: 1, None
+		height: "50dp"
+		text: "Back"
+		on_release: app.back()
+		
+		
+		
+<MSG_Invalid_Settings>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "Invalid settings..."	
+	BoxLayout:	
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			text: "Your settings contain invalid values. Make sure, you choose different languages for the language you want to learn and your motherlanguage!"
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+		Button:
+			size_hint: 1, None
+			height: "50dp"
+			text: "OK"
+			on_release: root.dismiss()
+				
+				
+<Edit>:
+	ScrollView:
+		BoxLayout:
+			orientation: "vertical"
+			spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+			Label:
+				id: lb_learn
+				text: root.text("learn")
+				text_size: self.size
+				halign: "center"
+				valign: "middle"
+			TextInput:
+				multiline: False
+				on_focus: root.input()
+				on_text_validate: eing_edit_mother.focus = True
+				size_hint: 1, None
+				height: "50dp"
+				id: eing_edit_learn
+			Label:
+				id: lb_mother
+				text: root.text("mother")
+				text_size: self.size
+				halign: "center"
+				valign: "middle"
+			TextInput:
+				multiline: False
+				on_focus: root.input()
+				on_text_validate: eing_edit_en.focus = True
+				size_hint: 1, None
+				height: "50dp"
+				id: eing_edit_mother
+			Label:
+				id: lb_en
+				text: root.text("en")
+				text_size: self.size
+				halign: "center"
+				valign: "middle"
+			TextInput:
+				multiline: False
+				on_focus: root.input()
+				on_text_validate: eing_edit_learn.focus = True
+				size_hint: 1, None
+				height: "50dp"
+				id: eing_edit_en
+			Button:
+				size_hint: 1, None
+				height: "50dp"
+				text: "Edit"
+				on_release: root.edit()
+			Button:
+				size_hint: 1, None
+				height: "50dp"
+				text: "Back"
+				on_release: app.back()
+				
+<MSG_Save>:
+	size_hint: None, None
+	size: (0.8 * app.root.width), (0.8 * app.root.height)
+	title: "Change has been saved!"
+	on_touch_down: app.back()
+	BoxLayout:
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		Label:
+			id: lb_save
+			text: "Change has been saved!"
+			text_size: self.size
+			halign: "center"
+			valign: "middle"
+		Button:
+			size_hint: 1, None
+			height: "50dp"
+			text: "OK"
+			on_release: root.dismiss(), app.back()
