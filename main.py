@@ -617,11 +617,12 @@ class List(BoxLayout):
                                    allow_empty_selection = False,
                                    cls = ListItemButton) #CompositeListItem)'''
         
-        dict_adapter = Adapter(args_converter = args_converter, data = liste_dict, cls = ListItemButton)
+        dict_adapter = Adapter(args_converter = args_converter, data = liste_dict, cls = ListButton)
         list_view = ListView(adapter=dict_adapter)
         self.ids.list_liste.add_widget(list_view)
 
-    
+class ListButton(ListItemButton):
+    pass   
         
 class Adapter(DictAdapter):
     def __init__(self, **kwargs):
@@ -1096,5 +1097,3 @@ class DictionaryApp(App):
 if __name__ == "__main__":
     status = "main"
     DictionaryApp().run()
-    
-# TODO: Backupfunktion ins Settings
