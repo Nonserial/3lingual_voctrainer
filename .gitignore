@@ -1,0 +1,8 @@
+*.txt
+*.pyc
+*.ini
+*.spec~
+./.git/
+./.buildozer/
+./backup/
+./__pycache__/
