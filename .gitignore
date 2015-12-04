@@ -2,7 +2,7 @@
 *.pyc
 *.ini
 *.spec~
-./.git/
-./.buildozer/
-./backup/
-./__pycache__/
+.git/
+.buildozer/
+backup/
+__pycache__/
