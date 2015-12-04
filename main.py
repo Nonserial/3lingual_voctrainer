@@ -156,7 +156,7 @@ class Eingabe_MOTHER_EN(BoxLayout):
     def __init__(self, **kwargs):
         super(Eingabe_MOTHER_EN, self).__init__(**kwargs)
         
-        global dictlist, voc_learn, error_count, lang_mother, lang_learn, mother_lang, learn_lang
+        global dictlist, voc_learn, error_count, lang_mother, lang_learn, lang_return, mother_lang, learn_lang, return_lang
         
         error_count = 0
         
@@ -185,11 +185,11 @@ class Eingabe_MOTHER_EN(BoxLayout):
         # Template-string with format-variables
         search_template_eng = "https://glosbe.com/gapi/translate?"\
                                     "from={}&"\
-                                    "dest=eng&"\
+                                    "dest={}&"\
                                     "format=json&"\
                                     "phrase={}&"\
                                     "pretty=true"
-        search_url_eng = search_template_eng.format(lang_learn, voc_learn)
+        search_url_eng = search_template_eng.format(lang_learn, lang_return, voc_learn)
         #print "Search_url_eng:", search_url_eng
         request_eng = UrlRequest(search_url_eng, on_success=self.search_eng_found, on_error=self.error)
     
@@ -239,7 +239,7 @@ class Eingabe_MOTHER_EN(BoxLayout):
             continue
         # Output in Label; caches error, if user presses the button too early
         try:
-            self.ids.lb_ausgabe_eng.text = "English:\n" + self.ausgabe_eng[:-2]
+            self.ids.lb_ausgabe_eng.text = return_lang + ":\n" + self.ausgabe_eng[:-2]
         except ReferenceError:
             return
         
@@ -369,7 +369,7 @@ class Abfrage(BoxLayout):
     def __init__(self, **kwargs):
         super(Abfrage, self).__init__(**kwargs)
         
-        global dictlist, number, anzahl, fehler, mother_lang, abfrageliste, \
+        global dictlist, number, anzahl, fehler, mother_lang, return_lang, abfrageliste, \
         mother, en, answ_en, answ_pos_list_en, voc_learn, status, durchlauf
         
         status = "abfrage"
@@ -466,7 +466,7 @@ class Abfrage(BoxLayout):
         
         elif durchlauf == 1:
             self.ids.abfr_lb_wort.text = voc_learn
-            self.ids.abfr_lb_language.text = "English translation:"
+            self.ids.abfr_lb_language.text = "%s translation:" % return_lang
             self.antw_text(answ_en, answ_pos_list_en[0], answ_pos_list_en[1])
             
         
@@ -652,7 +652,7 @@ class Adapter(DictAdapter):
 class Edit(BoxLayout):
     def __init__(self, **kwargs):
         super(Edit, self).__init__(**kwargs)
-        global edit_learn, edit_mother, edit_en, search, learn_lang, mother_lang, dictlist
+        global edit_learn, edit_mother, edit_en, search, learn_lang, mother_lang, return_lang, dictlist
         self.ids.eing_edit_learn.text = edit_learn
         self.ids.eing_edit_mother.text = edit_mother
         self.ids.eing_edit_en.text = edit_en
@@ -700,8 +700,8 @@ class Edit(BoxLayout):
             return "%s: " % learn_lang
         elif lang == "mother":
             return "%s: " % mother_lang
-        elif lang == "en":
-            return "English:"
+        elif lang == "return":
+            return "%s: " % return_lang
         
         
     
@@ -873,7 +873,7 @@ class DictionaryApp(App):
     # this needs to be separated from def build(); otherwise you get problems when running
     # from def on_config_change()
     def take_from_build_away(self):
-        global learn_lang, mother_lang, lang_learn, lang_mother, invalsettings, dictlist, dateiname, ersatz_pfad
+        global learn_lang, mother_lang, return_lang, lang_learn, lang_mother, lang_return, invalsettings, dictlist, dateiname, ersatz_pfad
         
         # capture error on android
         self.build_config(self.config)
@@ -881,6 +881,7 @@ class DictionaryApp(App):
         # get values from settingsmenu
         learn_lang = self.config.get("languages", "learnlanguage")
         mother_lang = self.config.get("languages", "motherlanguage")
+        return_lang = self.config.get("languages", "returnlanguage")
        
         ## load backupfile
         try:
@@ -918,7 +919,7 @@ class DictionaryApp(App):
         self.config.set("languages", "makebackup", "no")
         
         # get varibles for search-query
-        lang_learn, lang_mother = self.init_variables(learn_lang, mother_lang)
+        lang_learn, lang_mother, lang_return = self.init_variables(learn_lang, mother_lang, return_lang)
 
         # check invalide settings
         self.check_inval_settings()
@@ -927,10 +928,10 @@ class DictionaryApp(App):
             self.load_dictionary()
     
     def load_dictionary(self):
-        global dictlist, lang_learn, lang_mother, dateiname
+        global dictlist, lang_learn, lang_mother, lang_return, dateiname
         # Dictionary importieren und in der Variablen "dictlist" ablegen
         open_dict = DateiHandling()
-        dateiname = str("VOC_TR_" + lang_learn + "-" + lang_mother + ".txt")
+        dateiname = str("VOC_TR_" + lang_learn + "-" + lang_mother + "-" + lang_return + ".txt")
         #print "Open file:", dateiname
         dictlist = open_dict.oeffnen(dateiname)
         
@@ -945,6 +946,7 @@ class DictionaryApp(App):
                            "languages", {
                                          "learnlanguage": "Italian",
                                          "motherlanguage": "German",
+                                         "returnlanguage": "English",
                                          "backuppath": "../backups/voctrainer/",
                                          "makebackup": 0}
                                )
@@ -971,19 +973,26 @@ class DictionaryApp(App):
     
     def check_inval_settings(self):
         global invalsettings
-        if self.config.get("languages", "learnlanguage") == self.config.get("languages", "motherlanguage"):
-            invalsettings = True
-        else:
-            invalsettings = False        
+        # get all three languages:
+        langlist = [self.config.get("languages", "learnlanguage"), self.config.get("languages", "motherlanguage"), self.config.get("languages", "returnlanguage")]
         
-    def init_variables(self, learn_lang, mother_lang):
+        # if any language appears more than 1 time --> invalsettings = True
+        for i in langlist:
+            if langlist.count(i) != 1:
+                invalsettings = True
+                return
+        invalsettings = False        
+        
+    def init_variables(self, learn_lang, mother_lang, return_lang):
         # initialize lang_learn depending on settings
         lang_learn = self.select_lang(learn_lang)
         lang_mother = self.select_lang(mother_lang)
-        return lang_learn, lang_mother
+        lang_return = self.select_lang(return_lang)
+        return lang_learn, lang_mother, lang_return
     
     def select_lang(self, language):
         # ita - Italian
+        # en - English
         # de - German
         # fra - French
         # es - Spanish
@@ -993,6 +1002,8 @@ class DictionaryApp(App):
         # ar - Arabic
         if language == "Arabic":
             lang = "ar"
+        elif language == "English":
+            lang = "en"
         elif language == "French":
             lang = "fra"
         elif language == "German":
@@ -1097,3 +1108,7 @@ class DictionaryApp(App):
 if __name__ == "__main__":
     status = "main"
     DictionaryApp().run()
+
+
+# TODO: add english as selectable Option
+# TODO: add selectable second language
