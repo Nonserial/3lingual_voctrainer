@@ -23,6 +23,7 @@ from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.metrics import dp
 
+
 # Allgemeines DateiHandling
 #######################################################################################################################
 

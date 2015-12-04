@@ -1,20 +1,25 @@
 Three-lingual Vocabulary Trainer:
 
 
-The application aims to simplify the learning of a foreign language, by returning the translation in two different languages.
+When learning a third language, people often seem to lose the vocabulary of an already learned foreign language.
+
+This application aims to support you in learning a third language by returning the translation in two different languages, e.g. your motherlanguage and an already learned foreign language.
 Thus, you can mentally connect the new vocabulary with the languages you have already learned in the past.
 
 The application is designed to act as a "personal" vocabulary trainer, meaning that you can create your own personal dictionary in the foreign language and test these vocabulary anytime you want.
+Therefore, you can select a multiple-choice test and the number of vocabulary you want to be asked.
 
 In the user-settings menu you can select the following languages: 
 Arabic, English, French, German, Italian, Romanian, Russian, Spanish, and Turkish.
+
+You are free to select the language, in which you want to search the vocabulary.
+
+At the moment, the vocabulary-search is case-sensitive, meaning that you need to spell the words to query correctly.
 
 Currently, Arabic words are not displayed correctly due to yet missing implementation of Arabic signs in kivy's Label-widget.
 
 
 The application is using the glosbe.com-API, an open-source dictionary.
- 
-Currently, the vocabulary-search is case-sensitive, meaning you need to spell the vocabulary to query correctly.
 
-In the user-settings menu, you can make backups of your current dictionary and import them as well.
-Make sure to make a backup before upgrading the application to a newer version; otherwise your dictionary will be lost.
+In the user-settings menu, you can make backups of your current dictionary and import them later as well.
+Make sure to do a backup before upgrading the application to a newer version; otherwise your dictionary will be lost.
