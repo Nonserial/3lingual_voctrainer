@@ -1108,7 +1108,3 @@ class DictionaryApp(App):
 if __name__ == "__main__":
     status = "main"
     DictionaryApp().run()
-
-
-# TODO: add english as selectable Option
-# TODO: add selectable second language

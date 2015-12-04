@@ -1,13 +1,13 @@
 Three-lingual Vocabulary Trainer:
 
 
-The application aims to simplify the learning of a foreign language, by returning the translation in your Motherlanguage and in English(*).
+The application aims to simplify the learning of a foreign language, by returning the translation in two different languages.
 Thus, you can mentally connect the new vocabulary with the languages you have already learned in the past.
 
 The application is designed to act as a "personal" vocabulary trainer, meaning that you can create your own personal dictionary in the foreign language and test these vocabulary anytime you want.
 
 In the user-settings menu you can select the following languages: 
-Arabic, French, German, Italian, Romanian, Russian, Spanish, and Turkish.
+Arabic, English, French, German, Italian, Romanian, Russian, Spanish, and Turkish.
 
 Currently, Arabic words are not displayed correctly due to yet missing implementation of Arabic signs in kivy's Label-widget.
 
@@ -18,6 +18,3 @@ Currently, the vocabulary-search is case-sensitive, meaning you need to spell th
 
 In the user-settings menu, you can make backups of your current dictionary and import them as well.
 Make sure to make a backup before upgrading the application to a newer version; otherwise your dictionary will be lost.
-
-
-(*) If your motherlanguage is English, you can choose any third language you alredy know or you want to learn as "Motherlanguage" in the user-settings.
