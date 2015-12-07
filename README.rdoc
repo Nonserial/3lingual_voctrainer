@@ -10,7 +10,7 @@ The application is designed to act as a "personal" vocabulary trainer, meaning t
 Therefore, you can select a multiple-choice test and the number of vocabulary you want to be asked.
 
 In the user-settings menu you can select the following languages: 
-Arabic, English, French, German, Italian, Romanian, Russian, Spanish, and Turkish.
+Arabic, English, French, German, Italian, Kurdish, Latin, Romanian, Russian, Spanish, Swedish and Turkish.
 
 You are free to select the language, in which you want to search the vocabulary.
 
