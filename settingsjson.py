@@ -1,5 +1,8 @@
 import json
 
+languages_var = ["Arabic", "English", "French", "German", "Italian", "Kurdish", "Latin", "Romanian", "Russian", "Spanish", "Swedish", "Turkish"]
+
+
 settings_json = json.dumps([
 	{"type": "title",
 	"title": "Languages"},
@@ -8,19 +11,19 @@ settings_json = json.dumps([
 	"section": "languages",
 	"key": "learnlanguage",
 	"desc": "e.g. the language you want to learn: ",
-	"options": ["Arabic", "English", "French", "German", "Italian", "Romanian", "Russian", "Spanish", "Turkish"]},
+	"options": languages_var},
 	{"type": "scrolloptions",
 	"title": "Return-Language (1): ",
 	"section": "languages",
 	"key": "motherlanguage",
 	"desc": "e.g. your motherlanguage: ",
-	"options": ["Arabic", "English", "French", "German", "Italian", "Romanian", "Russian", "Spanish", "Turkish"]},
+	"options": languages_var},
 	{"type": "scrolloptions",
 	"title": "Return-Language (2): ",
 	"section": "languages",
 	"key": "returnlanguage",
 	"desc": "default 'English': ",
-	"options": ["Arabic", "English", "French", "German", "Italian", "Romanian", "Russian", "Spanish", "Turkish"]},
+	"options": languages_var},
 	{"type": "title",
 	"title": "Backups"},
 	{"type": "path",

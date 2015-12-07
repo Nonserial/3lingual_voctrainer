@@ -4,5 +4,5 @@
 *.spec~
 .git/
 .buildozer/
-backup/
+backups/
 __pycache__/

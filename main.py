@@ -759,16 +759,14 @@ class DictionaryRoot(BoxLayout):
     
     def eingabe_form(self):
         if invalsettings:
-            inval = MSG_Invalid_Settings()
-            inval.open()
+            self.inval_refactor()
             return
         self.clear_widgets()
         self.add_widget(Input_Learn())
         
     def abfrage_form(self):
         if invalsettings:
-            inval = MSG_Invalid_Settings()
-            inval.open()
+            self.inval_refactor()
             return
         if not dictlist:
             return
@@ -777,14 +775,16 @@ class DictionaryRoot(BoxLayout):
     
     def list(self):
         if invalsettings:
-            inval = MSG_Invalid_Settings()
-            inval.open()
+            self.inval_refactor()
             return
         if not dictlist:
             return
         self.clear_widgets()
         self.add_widget(List())
         
+    def inval_refactor(self):
+        inval = MSG_Invalid_Settings()
+        inval.open()
         
         
 class MSG_Invalid_Settings(Popup):
@@ -796,7 +796,12 @@ class SettingScrollOptions(SettingOptions):
     
     def _create_popup(self, instance):
         # create the popup
-        content = BoxLayout(orientation='vertical', spacing='5dp')
+        #content = BoxLayout(orientation='vertical', spacing='5dp')
+        content         = GridLayout(cols=1, spacing='5dp')
+        scrollview      = ScrollView( do_scroll_x=False)
+        scrollcontent   = GridLayout(cols=1,  spacing='5dp', size_hint=(None, None))
+        scrollcontent.bind(minimum_height=scrollcontent.setter('height'))
+
         popup_width = min(0.95 * Window.width, dp(500))
         self.popup = popup = Popup(
             content=content, title=self.title, size_hint=(None, None),
@@ -810,11 +815,14 @@ class SettingScrollOptions(SettingOptions):
         uid = str(self.uid)
         for option in self.options:
             state = 'down' if option == self.value else 'normal'
-            btn = ToggleButton(text=option, state=state, group=uid)
+            btn = ToggleButton(text=option, state=state, group=uid, size_hint=(None, None), height=dp(40), width = self.popup.width)
             btn.bind(on_release=self._set_option)
-            content.add_widget(btn)
-
+            scrollcontent.add_widget(btn)
+            
         # finally, add a cancel button to return on the previous panel
+        scrollview.add_widget(scrollcontent)
+        content.add_widget(scrollview)
+        
         content.add_widget(SettingSpacer())
         btn = Button(text='Cancel', size_hint_y=None, height=dp(50))
         btn.bind(on_release=popup.dismiss)
@@ -962,9 +970,7 @@ class DictionaryApp(App):
         global invalsettings, ersatz_pfad
         # ersatzpfad notwendig, da neuer build_config durchlauf in take_from_build_away
         ersatz_pfad = self.config.get("languages", "backuppath")
-        self.root.clear_widgets()
-        self.root.canvas.clear() # sonst Fehler mit Hintergrundfarbe
-        self.root.padding = 0 # sonst Fehler; btw tritt immer noch auf
+        self.back_refactor()
         self.check_inval_settings()
         self.root.add_widget(DictionaryRoot())
         if not invalsettings:
@@ -1001,6 +1007,9 @@ class DictionaryApp(App):
         # ro - Romanian
         # tr - Turkish
         # ar - Arabic
+        # la - Latin
+        # sv - Swedish
+        # ku - Kurdish
         if language == "Arabic":
             lang = "ar"
         elif language == "English":
@@ -1011,12 +1020,18 @@ class DictionaryApp(App):
             lang = "deu"
         elif language == "Italian":
             lang = "ita"
+        elif language == "Kurdish":
+            lang = "ku"
+        elif language == "Latin":
+            lang = "la"
         elif language == "Romanian":
             lang = "ro"
         elif language == "Russian":
             lang = "ru"
         elif language == "Spanish":
             lang = "es"
+        elif language == "Swedish":
+            lang = "sv"
         elif language == "Turkish":
             lang = "tr"        
         return lang
@@ -1033,23 +1048,15 @@ class DictionaryApp(App):
         write_dict.schreiben_datei(dateiname, dictlist)
         # damit man wieder zum Input zurueck kommt, wenn show von dort aufgerufen wird
         if status == "from_input":
-            self.root.clear_widgets()
-            self.root.canvas.clear() # sonst Fehler mit Hintergrundfarbe
-            self.root.padding = 0 # sonst Fehler
-            #self.root.canvas.add(Color(0.5, 0.5, 1, 0.5))
-            #self.root.canvas.add(Rectangle(size = self.root.size, pos = self.root.pos))
+            self.back_refactor()
             self.root.padding = (self.root.width * 0.02, self.root.width * 0.02) if self.root.width < self.root.height else (self.root.height * 0.02, self.root.height * 0.02)
             self.root.add_widget(Input_Learn())
         elif status == "from_list":
-            self.root.clear_widgets()
-            self.root.canvas.clear() # sonst Fehler mit Hintergrundfarbe
-            self.root.padding = 0 # sonst Fehler
+            self.back_refactor()
             self.root.padding = (self.root.width * 0.02, self.root.width * 0.02) if self.root.width < self.root.height else (self.root.height * 0.02, self.root.height * 0.02)
             self.root.add_widget(List())
         elif status == "abfrage":
-            self.root.clear_widgets()
-            self.root.canvas.clear() # sonst Fehler mit Hintergrundfarbe
-            self.root.padding = 0 # sonst Fehler
+            self.back_refactor()
             self.root.padding = (self.root.width * 0.02, self.root.width * 0.02) if self.root.width < self.root.height else (self.root.height * 0.02, self.root.height * 0.02)
             self.root.add_widget(Abfrage())
             return
@@ -1057,11 +1064,13 @@ class DictionaryApp(App):
             # Zuruecksetzen des Zaehlers, damit beim erneuten Aufruf wieder die Anzahl der Vokabeln im Dictionary angezeigt wird
             i = 0
             status = "main"
+            self.back_refactor()
+            self.root.add_widget(DictionaryRoot())
+            
+    def back_refactor(self):
             self.root.clear_widgets()
             self.root.canvas.clear() # sonst Fehler mit Hintergrundfarbe
-            self.root.padding = 0 # sonst Fehler
-            self.root.add_widget(DictionaryRoot())
-        
+            self.root.padding = 0 # sonst Fehler        
         
     def show(self):
         global voc_learn, edit_learn, edit_mother, edit_en, search, status
@@ -1075,11 +1084,7 @@ class DictionaryApp(App):
         edit_learn = search
         edit_mother = ",".join(dictlist[search][0])
         edit_en = ",".join(dictlist[search][1])
-        self.root.clear_widgets()
-        self.root.canvas.clear() # sonst Fehler mit Hintergrundfarbe
-        self.root.padding = 0 # sonst Fehler
-        #self.root.canvas.add(Color(0.5, 0.5, 1, 0.5))
-        #self.root.canvas.add(Rectangle(size = self.root.size, pos = self.root.pos))
+        self.back_refactor()
         self.root.padding = (self.root.width * 0.02, self.root.width * 0.02) if self.root.width < self.root.height else (self.root.height * 0.02, self.root.height * 0.02)
         self.root.add_widget(Edit())
         
@@ -1109,3 +1114,7 @@ class DictionaryApp(App):
 if __name__ == "__main__":
     status = "main"
     DictionaryApp().run()
+    
+
+# TODO: allgemein Refactor
+# TODO: Syrisch hinzufuegen
