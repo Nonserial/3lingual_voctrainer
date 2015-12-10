@@ -24,6 +24,7 @@ from kivy.core.window import Window
 from kivy.metrics import dp
 
 
+
 # Allgemeines DateiHandling
 #######################################################################################################################
 
@@ -735,12 +736,9 @@ class Unerwuenscht(Popup):
 ### Backup erstellen
 class Backup:
     def __init__(self):
-        global dictlist, dateiname
+        global dictlist, dateiname, bu_pfad
         bu = DateiHandling()
-        if platform == "android":
-            bu.schreiben_datei("/storage/emulated/0/backups/voctrainer/" + dateiname, dictlist)
-        else:    
-            bu.schreiben_datei("../backups/voctrainer/" + dateiname, dictlist)
+        bu.schreiben_datei(bu_pfad + dateiname, dictlist)
         #tkinter.messagebox.showinfo("Backup", "Eine Sicherungskopie des Dictionarys wurde unter dem Dateinamen 'dict-backup.txt' angelegt.")        
 
 # Hauptklassen usw.        
@@ -837,7 +835,7 @@ class DictionaryApp(App):
     
     def __init__(self, **kwargs):
         super(DictionaryApp, self).__init__(**kwargs)
-        global i, unerwuenscht, invalsettings, status, durchlauf, z
+        global i, unerwuenscht, invalsettings, status, durchlauf, bu_pfad
         
         invalsettings = True
         
@@ -859,15 +857,19 @@ class DictionaryApp(App):
         self.use_kivy_settings = False
         
         # Directory for Backups
+        
         if platform == "android":
-            self.bu_pfad = "/storage/emulated/0/backups/voctrainer/"
-            #self.bu_pfad = "../../backups/voctrainer"
-            if not os.path.exists(self.bu_pfad):
-                os.makedirs(self.bu_pfad)
+            bu_pfad = "/sdcard/backups/voctrainer/"
+            try:
+                if not os.path.exists(bu_pfad):
+                    os.makedirs(bu_pfad)
+            except:
+                bu_pfad = "../backups/voctrainer/"
+                os.makedirs(bu_pfad)
         else:
-            self.bu_pfad = "../backups/voctrainer/"
-            if not os.path.exists(self.bu_pfad):
-                os.makedirs(self.bu_pfad)
+            bu_pfad = "../backups/voctrainer/"
+            if not os.path.exists(bu_pfad):
+                    os.makedirs(bu_pfad)
         
         
     def build(self):
@@ -912,7 +914,7 @@ class DictionaryApp(App):
         try:
             self.config.read("dictionary.ini")
             # reset path
-            self.config.set("languages", "backuppath", self.bu_pfad)
+            self.config.set("languages", "backuppath", bu_pfad)
         except:
             pass
         
@@ -949,7 +951,7 @@ class DictionaryApp(App):
     def build_config(self, config):
         try:
             config.read("dictionary.ini")
-            config.set("languages", "backuppath", self.bu_pfad)
+            config.set("languages", "backuppath", bu_pfad)
         except:
             config.setdefaults(
                            "languages", {
@@ -1087,7 +1089,7 @@ class DictionaryApp(App):
         self.back_refactor()
         self.root.padding = (self.root.width * 0.02, self.root.width * 0.02) if self.root.width < self.root.height else (self.root.height * 0.02, self.root.height * 0.02)
         self.root.add_widget(Edit())
-        
+    
     def on_pause(self):
         return True
     
@@ -1115,6 +1117,6 @@ if __name__ == "__main__":
     status = "main"
     DictionaryApp().run()
     
-
-# TODO: allgemein Refactor
-# TODO: Syrisch hinzufuegen
+    
+    
+# TODO: DateiHandling refactor --> in externe Datei mit Erkennung fuer String, List, Dict

@@ -24,47 +24,31 @@
 	spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
 	padding: (root.width * 0.02, root.width * 0.02) if root.width < root.height else (root.height * 0.02, root.height * 0.02)
 	BoxLayout:
-		orientation: "horizontal"
-		canvas:
-			Color:
-				rgba: 0.5, 0.5, 0.5, 1
-			Rectangle:
-				pos: self.pos
-				size: self.size
-		size_hint: 1, None
-		height: "30dp"
-		Label:
-			size_hint: 0.8, 1
-			text: "[i] 3-lingual VOC-Trainer[/i]"
-			markup: True
-			text_size: self.size
-			halign: "left"
-			valign: "middle"
-			font_size: "19dp"
-			#color: 0, 0, 0, 1
+		orientation: "vertical"
+		spacing: (root.width * 0.02) if root.width < root.height else root.height * 0.02
+		ActionBar:
+			ActionView:
+				use_separator: True
+				ActionPrevious:
+					title: "Voc-Trainer"					
+					with_previous: False
+					app_icon: "./images/icon_merge.png"
+					app_icon_height: self.height
+					app_icon_width: self.height
+				ActionOverflow:
+					ActionButton:
+						text: "Settings"
+						on_release: app.open_settings()
+				
 		Button:
-			id: btn_menu
-			background_color: 0, 0, 0, 0
-			size_hint: 0.2, 1
-			size: self.size
-			halign: "right"
-			valign: "middle"
-			text: "[i]Menu [/i]"
-			text_size: self.size
-			font_size: "19dp"
-			markup: True
-			#color: 0, 0, 0, 1
-			on_release: app.open_settings()
-			
-	Button:
-		text: "Vocabulary Input"
-		on_release: root.eingabe_form()
-	Button:
-		text: "Check Yourself"
-		on_release: root.abfrage_form()
-	Button:
-		text: "List"
-		on_release: root.list()
+			text: "Vocabulary Input"
+			on_release: root.eingabe_form()
+		Button:
+			text: "Check Yourself"
+			on_release: root.abfrage_form()
+		Button:
+			text: "List"
+			on_release: root.list()
 		
 		
 <Input_Learn>:

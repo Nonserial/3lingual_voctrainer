@@ -1,7 +1,7 @@
 Three-lingual Vocabulary Trainer:
 
 
-When learning a third language, people often seem to lose the vocabulary of an already learned foreign language.
+When learning a third language, people often seem to forget the vocabulary of an already learned foreign language.
 
 This application aims to support you in learning a third language by returning the translation in two different languages, e.g. your motherlanguage and an already learned foreign language.
 Thus, you can mentally connect the new vocabulary with the languages you have already learned in the past.
