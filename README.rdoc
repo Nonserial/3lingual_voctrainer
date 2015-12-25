@@ -6,21 +6,21 @@ When learning a third language, people often tend to forget the vocabulary of an
 This application aims to support you in learning a third language by returning the translation in two different languages, e.g. your motherlanguage and an already learned foreign language.
 Thus you can mentally connect the new vocabulary with other languages you have already learned.
 
-The application is designed to act as a "personal" vocabulary trainer, meaning that you can create your own personal dictionary in the foreign language and test these vocabulary anytime you want.
-Therefore, you can select a multiple-choice test and the number of vocabulary you want to be asked.
+The application is designed to act as a "personal" vocabulary trainer, meaning that you can create your own personal dictionary. 
+You can test these vocabulary anytime you want in a multiple-choice test.
 
-In the user-settings menu you can select the following languages:
-
+Currently supported languages are:
 Arabic, English, French, German, Italian, Kurdish, Latin, Romanian, Russian, Spanish, Swedish and Turkish.
 
 You are free to select the language, in which you want to search the vocabulary.
 
 At the moment, the vocabulary-search is case-sensitive, meaning that you need to spell the words to query correctly.
 
-Currently, Arabic words are not displayed correctly due to yet missing implementation of Arabic signs in kivy's Label-widget.
+Furthermore, Arabic words are not displayed correctly due to yet missing implementation of Arabic signs in kivy's Label-widget.
 
 
-The application is using the glosbe.com-API, an open-source dictionary.
+The application uses the glosbe.com application programming interface (https://glosbe.com/a-api).
 
-In the user-settings menu, you can make backups of your current dictionary and import them later as well.
-Make sure to do a backup before upgrading the application to a newer version; otherwise your dictionary will be lost.
+
+In the user-settings menu, you can make backups of your current dictionary and import them later.
+Make sure to do a backup before upgrading the application to a newer version; otherwise all data will be lost.

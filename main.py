@@ -1120,3 +1120,9 @@ if __name__ == "__main__":
     
     
 # TODO: DateiHandling refactor --> in externe Datei mit Erkennung fuer String, List, Dict
+# TODO: case sensitivity 
+# TODO: Genus fuer Sunbstantive ausgeben
+# TODO: "la" im Franz
+# TODO: Erklaerung, grammatikalisch Funktion des Wortes
+# TODO: Legende/ Readme in Settings
+# TODO: Context
