@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.factory import Factory
@@ -22,7 +24,6 @@ from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.metrics import dp
-
 
 
 # Allgemeines DateiHandling
@@ -89,6 +90,7 @@ class Input_Learn(BoxLayout):
         
         # Auswerten des Inputs der zu lernenden Vokabel
         voc_learn = self.ids.eing_e_learn.text
+        voc_learn = voc_learn.encode("utf-8")
         
         # If space in input use only string before space        
         if voc_learn.find(chr(32)) >=1:
@@ -266,11 +268,13 @@ class Eingabe_MOTHER_EN(BoxLayout):
             self.clear_widgets()
             self.add_widget(Input_Learn())
             return
-        mother = mother[:-2]
-        en = en[:-2]
+        mother = mother[:-2].encode("utf-8").split(",")
+        en = en[:-2].encode("utf-8").split(",")
+        
         # Funktion, um Vokabeln ins Dictionary einzufuegen (zu einem Tupel konvertiert
         # und als Liste separiert mit Trennung bei den Kommata!
-        dictlist[unicode(learn, "utf-8")] = (mother.encode("utf-8").split(","), en.encode("utf-8").split(","))
+        #dictlist[unicode(learn, "utf-8")] = (mother.encode("utf-8").split(","), en.encode("utf-8").split(","))
+        dictlist[unicode(learn, "utf-8")] = ([unicode(s, "utf-8") for s in mother], [unicode(s, "utf-8") for s in en])
         
         # danach wird das aktuelle Fenster geschlossen und ein neues fuer eine weitere Vokabeleingabe geoeffnet
         self.clear_widgets()
@@ -404,15 +408,15 @@ class Abfrage(BoxLayout):
             mother, en = dictlist[voc_learn]      
     
             # korrekte Umwandlung der Liste in unicode
-            liste = []
-            for element in mother:
-                liste.append(unicode(element, "utf-8"))
-            mother = liste
+            #liste = []
+            #for element in mother:
+            #    liste.append(unicode(element, "utf-8"))
+            #mother = liste
             
-            liste = []
-            for element in en:
-                liste.append(unicode(element, "utf-8"))
-            en = liste
+            #liste = []
+            #for element in en:
+            #    liste.append(unicode(element, "utf-8"))
+            #en = liste
         
             # Schreiben der Antwortmoeglichkeiten Muttersprache muss hier passieren:
             # richtige Antwort Mutter:

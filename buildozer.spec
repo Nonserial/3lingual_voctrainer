@@ -25,7 +25,7 @@ source.exclude_dirs = backups, bin, __pycache__
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.19
+version = 0.20
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -33,7 +33,7 @@ version = 0.19
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = openssl,kivy
+requirements = openssl,kivy,hostpython2
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -49,7 +49,7 @@ presplash.filename = ./images/presplash.png
 icon.filename = ./images/icon_merge.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
-orientation = all
+orientation = portrait
 
 # (bool) Indicate if the application should be fullscreen or not
 fullscreen = 1
@@ -87,7 +87,7 @@ android.permissions = INTERNET
 #android.ant_path =
 
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
-android.p4a_dir = /home/lorenz/.buildozer/android/platform/python-for-android
+android.p4a_dir = /home/lorenz/.local/lib/python2.7/site-packages/pythonforandroid/
 
 # (list) python-for-android whitelist
 #android.p4a_whitelist =
