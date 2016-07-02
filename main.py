@@ -273,7 +273,6 @@ class Eingabe_MOTHER_EN(BoxLayout):
         
         # Funktion, um Vokabeln ins Dictionary einzufuegen (zu einem Tupel konvertiert
         # und als Liste separiert mit Trennung bei den Kommata!
-        #dictlist[unicode(learn, "utf-8")] = (mother.encode("utf-8").split(","), en.encode("utf-8").split(","))
         dictlist[unicode(learn, "utf-8")] = ([unicode(s, "utf-8") for s in mother], [unicode(s, "utf-8") for s in en])
         
         # danach wird das aktuelle Fenster geschlossen und ein neues fuer eine weitere Vokabeleingabe geoeffnet
@@ -406,18 +405,7 @@ class Abfrage(BoxLayout):
         
             # Speichern der richtigen Loesungen fuer diesen Durchgang
             mother, en = dictlist[voc_learn]      
-    
-            # korrekte Umwandlung der Liste in unicode
-            #liste = []
-            #for element in mother:
-            #    liste.append(unicode(element, "utf-8"))
-            #mother = liste
-            
-            #liste = []
-            #for element in en:
-            #    liste.append(unicode(element, "utf-8"))
-            #en = liste
-        
+           
             # Schreiben der Antwortmoeglichkeiten Muttersprache muss hier passieren:
             # richtige Antwort Mutter:
             answ_mother = self.antw_beschneiden(mother)
